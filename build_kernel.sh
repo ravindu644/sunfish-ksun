@@ -25,6 +25,7 @@ fi
 
 # Build options
 export KBUILD_BUILD_USER="@ravindu644"
+export MERGE_CONFIG="${SCRIPT_DIR}/private/msm-google/scripts/kconfig/merge_config.sh"
 
 export GKI_KERNEL_BUILD_OPTIONS="
     SKIP_MRPROPER=1 \

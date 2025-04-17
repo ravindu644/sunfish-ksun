@@ -292,6 +292,13 @@ if [ -n "${POST_DEFCONFIG_CMDS}" ]; then
   eval ${POST_DEFCONFIG_CMDS}
   set +x
 fi
+
+  #custom defconfig
+  echo "========================================================"
+  echo " Merging custom defconfig with .config"
+  (cd ${OUT_DIR} && ${MERGE_CONFIG} -m .config ${SCRIPT_DIR}/custom_defconfigs/custom_defconfig)
+  (cd ${OUT_DIR} && make O=${OUT_DIR} ${TOOL_ARGS} olddefconfig)
+
 fi
 
 if [ -n "${TAGS_CONFIG}" ]; then
