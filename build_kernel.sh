@@ -29,7 +29,9 @@ export MERGE_CONFIG="${SCRIPT_DIR}/private/msm-google/scripts/kconfig/merge_conf
 
 export GKI_KERNEL_BUILD_OPTIONS="
     SKIP_MRPROPER=1 \
-    BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi
+    BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi \
+    KMI_SYMBOL_LIST_STRICT_MODE=0 \
+    ABI_DEFINITION=
 "
 
 # Run menuconfig only if you want to.
