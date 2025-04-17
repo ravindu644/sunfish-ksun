@@ -23,4 +23,12 @@ if [[ ! -d "${SCRIPT_DIR}/prebuilts" ]]; then
     cd "${SCRIPT_DIR}"
 fi
 
-BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi build/build.sh "$@"
+# Build options
+export KBUILD_BUILD_USER="@ravindu644"
+
+export GKI_KERNEL_BUILD_OPTIONS="
+    SKIP_MRPROPER=1 \
+    BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi
+"
+
+env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@"
