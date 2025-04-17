@@ -31,4 +31,8 @@ export GKI_KERNEL_BUILD_OPTIONS="
     BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi
 "
 
+# Run menuconfig only if you want to.
+# It's better to use MAKE_MENUCONFIG=0 when everything is already properly enabled, disabled, or configured.
+export MAKE_MENUCONFIG=1
+
 env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@"
