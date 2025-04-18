@@ -91,10 +91,10 @@ sign_boot(){
 build_zip(){
     if [ -f "${SCRIPT_DIR}/dist/boot.img" ]; then
         cd "${SCRIPT_DIR}/dist" && \
-        zip -9 "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}.zip" boot.img && \
+        zip -9 "KernelSU-Next-Pixel-4a-${BUILD_KERNEL_VERSION}.zip" boot.img && \
         rm -f boot.img
 
-        upload_to_gofile "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}.zip"
+        upload_to_gofile "KernelSU-Next-Pixel-4a-${BUILD_KERNEL_VERSION}.zip"
 
         cd "${SCRIPT_DIR}"
     fi
