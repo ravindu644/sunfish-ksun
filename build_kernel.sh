@@ -57,6 +57,33 @@ build_kernel(){
     env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@"
 }
 
+# Function to cook a boot.img
+build_boot(){
+    
+    local CMDLINE="console=ttyMSM0,115200n8 androidboot.console=ttyMSM0 printk.devkmsg=on msm_rtb.filter=0x237 ehci-hcd.park=3 service_locator.enable=1 androidboot.memcg=1 cgroup.memory=nokmem lpm_levels.sleep_disabled=1 usbcore.autosuspend=7 loop.max_part=7 loop.hw_queue_depth=31 androidboot.usbcontroller=a600000.dwc3 swiotlb=1 androidboot.boot_devices=soc/1d84000.ufshc cgroup_disable=pressure buildvariant=user"
+    local MKBOOTIMG="${SCRIPT_DIR}/mkbootimg/mkbootimg.py"
+
+    echo -e "\n[INFO] Creating a boot image...\n"
+
+    ${MKBOOTIMG} \
+        --kernel "${SCRIPT_DIR}/out/android-msm-pixel-4.14/dist/Image.lz4" \
+        --ramdisk "${SCRIPT_DIR}/pixel-images/sunfish/ramdisk.img.gz" \
+        --dtb "${SCRIPT_DIR}/pixel-images/sunfish/dtb" \
+        --cmdline "${CMDLINE}" \
+        --base "0x00000000" \
+        --kernel_offset "0x00008000" \
+        --ramdisk_offset "0x01000000" \
+        --second_offset "0x00000000" \
+        --dtb_offset "0x01f00000" \
+        --os_version "13.0.0" \
+        --os_patch_level "2023-06" \
+        --tags_offset "0x00000100" \
+        --pagesize "4096" \
+        --header_version "2" \
+        --output "${SCRIPT_DIR}/dist/boot.img"
+
+}
+
 # Funciton to sign the build boot image
 sign_boot(){
     local AVBTOOL="${SCRIPT_DIR}/mkbootimg/avbtool.py"   
@@ -86,7 +113,7 @@ build_zip(){
 }
 
 # Main build process
-( build_kernel
-sign_boot ) || exit 1
-
+build_kernel || exit 1
+build_boot
+sign_boot
 build_zip
