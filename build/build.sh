@@ -145,6 +145,8 @@
 #     - PAGE_SIZE=<flash page size>
 #     If the BOOT_IMAGE_HEADER_VERSION is 3, a vendor_boot image will be built unless
 #     SKIP_VENDOR_BOOT is defined.
+#     - MKBOOTIMG_EXTRA_ARGS=<space-delimited mkbootimg arguments>
+#       Refer to: ./mkbootimg.py --help
 #
 #   BUILD_INITRAMFS
 #     if defined, build a ramdisk containing all .ko files and resulting depmod artifacts
@@ -704,6 +706,11 @@ if [ ! -z "${BUILD_BOOT_IMG}" ] ; then
 	else
 		MKBOOTIMG_ARGS+=("--ramdisk" "${DIST_DIR}/ramdisk.gz")
 	fi
+
+  # Extra Boot image args
+  for MKBOOTIMG_ARG in ${MKBOOTIMG_EXTRA_ARGS}; do
+    MKBOOTIMG_ARGS+=("${MKBOOTIMG_ARG}")
+  done
 
 	set -x
 	python "$MKBOOTIMG_PATH" --kernel "${DIST_DIR}/${KERNEL_BINARY}" \
