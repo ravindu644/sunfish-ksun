@@ -1,7 +1,9 @@
 #!/bin/bash
 
 export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${SCRIPT_DIR}/download_toolchain.sh
+source ${SCRIPT_DIR}/pixel-images/scripts/download_toolchain.sh
+source ${SCRIPT_DIR}/pixel-images/scripts/gofile.sh
+
 mkdir -p ${SCRIPT_DIR}/dist
 
 # Install the requirements for building the kernel when running the script for the first time
@@ -86,8 +88,11 @@ sign_boot(){
 build_zip(){
     if [ -f "${SCRIPT_DIR}/dist/boot.img" ]; then
         cd "${SCRIPT_DIR}/dist" && \
-        zip -9 "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}" boot.img && \
+        zip -9 "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}.zip" boot.img && \
         rm -f boot.img
+
+        upload_to_gofile "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}.zip"
+
         cd "${SCRIPT_DIR}"
     fi
 }
