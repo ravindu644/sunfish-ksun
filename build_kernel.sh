@@ -45,21 +45,7 @@ export GKI_KERNEL_BUILD_OPTIONS="
     SKIP_MRPROPER=1 \
     BUILD_CONFIG=private/msm-google/build.config.sunfish_no-cfi \
     KMI_SYMBOL_LIST_STRICT_MODE=0 \
-    ABI_DEFINITION= \
-    BUILD_BOOT_IMG=1 \
-    MKBOOTIMG_PATH=${SCRIPT_DIR}/mkbootimg/mkbootimg.py \
-    GKI_RAMDISK_PREBUILT_BINARY=ramdisk.gz \
-    KERNEL_BINARY=Image.lz4 \
-    BOOT_IMAGE_HEADER_VERSION=2 \
-    PAGE_SIZE=4096 \
-    SKIP_VENDOR_BOOT=1
-"
-export KERNEL_CMDLINE="console=ttyMSM0,115200n8 androidboot.console=ttyMSM0 printk.devkmsg=on msm_rtb.filter=0x237 ehci-hcd.park=3 service_locator.enable=1 androidboot.memcg=1 cgroup.memory=nokmem lpm_levels.sleep_disabled=1 usbcore.autosuspend=7 loop.max_part=7 loop.hw_queue_depth=31 androidboot.usbcontroller=a600000.dwc3 swiotlb=1 androidboot.boot_devices=soc/1d84000.ufshc cgroup_disable=pressure buildvariant=user"
-
-export MKBOOTIMG_EXTRA_ARGS="
-    --base=0x00000000 \
-    --os_version 13.0.0 \
-    --os_patch_level 2023-06-00
+    ABI_DEFINITION=
 "
 
 # Run menuconfig only if you want to.
