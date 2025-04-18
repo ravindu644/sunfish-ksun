@@ -2,6 +2,7 @@
 
 export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${SCRIPT_DIR}/download_toolchain.sh
+mkdir -p ${SCRIPT_DIR}/dist
 
 # Install the requirements for building the kernel when running the script for the first time
 if [ ! -f ".requirements" ]; then
@@ -60,4 +61,39 @@ export MKBOOTIMG_EXTRA_ARGS="
 # It's better to use MAKE_MENUCONFIG=0 when everything is already properly enabled, disabled, or configured.
 export MAKE_MENUCONFIG=1
 
-env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@"
+# Funciton to cook the kernel
+build_kernel(){
+    env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@" && \
+        cp "${SCRIPT_DIR}/out/android-msm-pixel-4.14/dist/boot.img" "${SCRIPT_DIR}/dist"
+}
+
+# Funciton to sign the build boot image
+sign_boot(){
+    local AVBTOOL="${SCRIPT_DIR}/mkbootimg/avbtool.py"   
+    echo -e "\n[INFO] Signing the boot.img...\n"
+
+    ${AVBTOOL} \
+        add_hash_footer \
+        --partition_name "boot" \
+        --partition_size "67108864" \
+        --image "${SCRIPT_DIR}/dist/boot.img" \
+        --algorithm "SHA256_RSA2048" \
+        --key "${SCRIPT_DIR}/mkbootimg/tests/data/testkey_rsa2048.pem"  
+
+}
+
+# Funciton to make a zip out of the built boot image
+build_zip(){
+    if [ -f "${SCRIPT_DIR}/dist/boot.img" ]; then
+        cd "${SCRIPT_DIR}/dist" && \
+        zip -9 "Kernel-Pixel-4a-${BUILD_KERNEL_VERSION}" boot.img && \
+        rm -f boot.img
+        cd "${SCRIPT_DIR}"
+    fi
+}
+
+# Main build process
+( build_kernel
+sign_boot ) || exit 1
+
+build_zip
