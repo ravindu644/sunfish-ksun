@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Init submodules
+git submodule init && git submodule update
+
 export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${SCRIPT_DIR}/pixel-images/scripts/download_toolchain.sh
 source ${SCRIPT_DIR}/pixel-images/scripts/gofile.sh
