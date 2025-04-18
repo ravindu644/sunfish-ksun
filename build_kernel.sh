@@ -54,8 +54,7 @@ export MAKE_MENUCONFIG=1
 
 # Funciton to cook the kernel
 build_kernel(){
-    env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@" && \
-        cp "${SCRIPT_DIR}/out/android-msm-pixel-4.14/dist/boot.img" "${SCRIPT_DIR}/dist"
+    env ${GKI_KERNEL_BUILD_OPTIONS} build/build.sh "$@"
 }
 
 # Funciton to sign the build boot image
